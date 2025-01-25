@@ -25,4 +25,8 @@
     <ProjectReference Include="..\..\src\pdf-merge\pdf-merge.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="TestData\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

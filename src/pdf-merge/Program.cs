@@ -1,8 +1,10 @@
-﻿using CommandLine;
+﻿using System;
+using CommandLine;
 
 namespace pdf_merge {
     class Program {
         public class Options {
+            // Define command line arguments
             [Option('d', "directory", Required = false, HelpText = "Specify a directory from which to retrieve all PDF files (Files are sorted lexicographically before combining).")]
             public string? Directory { get; set; }
 
@@ -15,10 +17,14 @@ namespace pdf_merge {
             [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
             public bool Verbose { get; set; }
 
+
             static void Main(string[] args) {
                 Parser.Default.ParseArguments<Options>(args)
                        .WithParsed<Options>(o => {
-
+                           System.Console.WriteLine(o.Verbose);
+                           System.Console.WriteLine(o.Directory);
+                           System.Console.WriteLine(o.Files);
+                           System.Console.WriteLine(o.Output);
                        });
             }
         }
