@@ -10,19 +10,19 @@ public class FileParserTests {
     [Test]
     public void ValidDirectoryDoesNotThrowException() {
         List<string> testList = new List<string>();
-        Assert.DoesNotThrow(() => FileParser.FilesFromDirectory(testDir, ref testList));
+        Assert.DoesNotThrow(() => FileParser.FilesFromDirectory(testDir, ref testList, false));
     }
 
     [Test]
     public void InvalidDirectoryThrowsException() {
         List<string> testList = new List<string>();
-        Assert.Throws<IOException>(() => FileParser.FilesFromDirectory(testDir + "/PathThatDoesNotExist", ref testList));
+        Assert.Throws<IOException>(() => FileParser.FilesFromDirectory(testDir + "/PathThatDoesNotExist", ref testList, false));
     }
 
     [Test]
     public void OnlyPDFFilesAreReturned() {
         List<string> testList = new List<string>();
-        FileParser.FilesFromDirectory(testDir, ref testList);
+        FileParser.FilesFromDirectory(testDir, ref testList, false);
 
         var result = testList.Select(x => Path.GetFileName(x));
         List<string> expected = ["file1.pdf", "file2.pdf", "file3.pdf"];
@@ -36,7 +36,7 @@ public class FileParserTests {
         List<string> testList = new List<string>();
         List<string> input = ["file4.txt"];
 
-        Assert.Throws<IOException>(() => FileParser.FilesFromList(input, ref testList));
+        Assert.Throws<IOException>(() => FileParser.FilesFromList(input, ref testList, false));
     }
 
     [Test]
@@ -44,7 +44,7 @@ public class FileParserTests {
         List<string> testList = new List<string>();
         List<string> input = ["NonExistingFile.pdf"];
 
-        Assert.Throws<IOException>(() => FileParser.FilesFromList(input, ref testList));
+        Assert.Throws<IOException>(() => FileParser.FilesFromList(input, ref testList, false));
     }
 
     [Test]
@@ -52,7 +52,7 @@ public class FileParserTests {
         List<string> testList = new List<string>();
         List<string> input = [testDir + "/file2.pdf", testDir + "/file1.pdf"];
 
-        FileParser.FilesFromList(input, ref testList);
+        FileParser.FilesFromList(input, ref testList, false);
 
         var result = testList.Select(x => Path.GetFileName(x));
         List<string> expected = ["file2.pdf", "file1.pdf"];
