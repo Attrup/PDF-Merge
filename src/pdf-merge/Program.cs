@@ -20,18 +20,32 @@ namespace pdf_merge {
 
 
             static void Main(string[] args) {
+                ConsoleOutput.Print("PDF-Merge");
                 List<string> filePaths = [];
 
                 Parser.Default.ParseArguments<Options>(args)
                        .WithParsed<Options>(o => {
+                           // If directory is specified, add the PDF files to list of file paths
                            if (o.Directory != null) {
-                               FileParser.FilesFromDirectory(o.Directory, ref filePaths);
-                           }
-                           if (o.Files != null && o.Files.Any()) {
-                               FileParser.FilesFromList(o.Files, ref filePaths);
+                               try {
+                                   FileParser.FilesFromDirectory(o.Directory, ref filePaths, o.Verbose);
+                               }
+                               catch (Exception e) {
+                                   ConsoleOutput.Error(e.Message);
+                                   return;
+                               }
                            }
 
-                           System.Console.WriteLine(o.Output);
+                           // If files are specified, add them to the list of file paths
+                           if (o.Files != null && o.Files.Any()) {
+                               try {
+                                   FileParser.FilesFromList(o.Files, ref filePaths, o.Verbose);
+                               }
+                               catch (Exception e) {
+                                   ConsoleOutput.Error(e.Message);
+                                   return;
+                               }
+                           }
                        });
             }
         }
