@@ -15,7 +15,7 @@ namespace pdf_merge {
             [Option('o', "output", Required = false, HelpText = "Set output file name without file extension (Default is 'combined').")]
             public string? Output { get; set; }
 
-            [Option('v', "verbose", Default = true, Required = false, HelpText = "Set output to verbose messages.")]
+            [Option('v', "verbose", Default = false, Required = false, HelpText = "Set output to verbose messages.")]
             public bool Verbose { get; set; }
 
 
@@ -46,7 +46,13 @@ namespace pdf_merge {
                                    return;
                                }
                            }
+
+                           // Combine PDF files
+                           string fileName = o.Output != null ? o.Output : "combined";
+                           FileMerger.MergeFiles(filePaths, fileName, o.Verbose);
                        });
+
+
             }
         }
     }
