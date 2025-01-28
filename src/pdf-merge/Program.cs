@@ -48,8 +48,13 @@ namespace pdf_merge {
                            }
 
                            // Combine PDF files
-                           string fileName = o.Output != null ? o.Output : "combined";
-                           FileMerger.MergeFiles(filePaths, fileName, o.Verbose);
+                           if (filePaths.Count != 0) {
+                               string fileName = o.Output != null ? o.Output : "combined";
+                               FileMerger.MergeFiles(filePaths, fileName, o.Verbose);
+                           }
+                           else {
+                               ConsoleOutput.Error("No PDF files found");
+                           }
                        });
 
 
