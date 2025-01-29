@@ -16,6 +16,8 @@ public class FileParser {
         string[] fileEntries = Directory.GetFiles(dirPath);
         Array.Sort(fileEntries);
 
+        if (fileEntries.Length == 0) ConsoleOutput.Warning("No files found in directory");
+
         foreach (string file in fileEntries) {
             if (Path.GetExtension(file).Equals(".pdf")) {
                 filePaths.Add(file);
