@@ -6,11 +6,15 @@
     <RootNamespace>pdf_merge</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Company>Jonas Attrup</Company>
+    <AssemblyTitle>PDF-Merge</AssemblyTitle>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="PDFsharp" Version="6.2.0-preview-2" />
   </ItemGroup>
+
+
 
 </Project>
