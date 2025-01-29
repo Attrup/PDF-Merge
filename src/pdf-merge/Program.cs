@@ -6,13 +6,13 @@ namespace pdf_merge {
     class Program {
         public class Options {
             // Define command line arguments
-            [Option('d', "directory", Required = false, HelpText = "Set directory to retrieve all PDF files from (Files are sorted lexicographically before combining).")]
+            [Option('d', "directory", Required = false, HelpText = "Set the directory to retrieve all PDF files from (Files are sorted lexicographically before combining).")]
             public string? Directory { get; set; }
 
             [Option('f', "files", Required = false, HelpText = "Specify individual PDF file paths (Accepts multiple file paths separated by spaces) (Files are combined in the order they are specified).")]
             public IEnumerable<string>? Files { get; set; }
 
-            [Option('o', "output", Required = false, HelpText = "Set output file name without file extension (Default is 'combined').")]
+            [Option('o', "output", Default = "combined", Required = false, HelpText = "Set output file name without file extension.")]
             public string? Output { get; set; }
 
             [Option('v', "verbose", Default = false, Required = false, HelpText = "Set output to verbose messages.")]
