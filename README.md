@@ -84,13 +84,13 @@ SUCCESS: PDF files merged and saved as combined.pdf
 
 ## Installation
 
-To use PDF-Merge, you need to build it locally and add it to your system path.
-
-### Requirements
-- .NET 8 or newer (older versions may work but are untested).
+To use PDF-Merge, either download the [latest release](https://github.com/Attrup/PDF-Merge/releases) or build it locally, and add the obtained binary to your system path.
 
 ### Build Instructions
+#### Requirements
+- .NET 8 or newer (older versions may work but are untested).
 
+#### Steps
 1. Clone the repository:
    ```bash
    git clone <repository_url>
@@ -98,13 +98,12 @@ To use PDF-Merge, you need to build it locally and add it to your system path.
    ```
 2. Build a release version:
    ```bash
-   dotnet publish -c Release
+   dotnet publish src/pdf-merge/pdf-merge.csproj -c Release -o bin/pdf-merge
    ```
 3. Locate the built tool in:
    ```
-   src/pdf-merge/bin/Release/publish
+   bin/pdf-merge
    ```
-4. Move the `publish` folder to a permanent location and rename it to `pdf-merge`.
-5. Add the `pdf-merge` folder to your system path.
+4. Move the `pdf-merge` binary to a permanent location and add it to your system path.
 
 After completing these steps, you can use the `pdf-merge` command from any terminal.
