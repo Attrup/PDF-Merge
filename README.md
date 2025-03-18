@@ -1,11 +1,11 @@
 # PDF-Merge
 ![Tests](https://github.com/Attrup/PDF-Merge/actions/workflows/unit-tests.yml/badge.svg)
 
-PDF-Merge is a simple and easy-to-use CLI tool for merging PDF files, created as part of learning the C# language. To use the tool, you must build it locally and add it to your system path. Follow the instructions under [Installation](#installation) to get started 🙂
+PDF-Merge is a simple and easy-to-use CLI tool for merging PDF files, created as part of learning the C# language. To use the tool, you must obtain a binary by either downloading the [latest release](https://github.com/Attrup/PDF-Merge/releases) or building it locally and add it to your system path. Follow the instructions under [Installation](#installation) to get started 🙂
 
 ## User Guide
 
-Once installed and added to the system path, the tool can be called from anywhere using:
+Once added to the system path, the tool can be called from anywhere using:
 
 ```bash
 pdf-merge <arguments>
