@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CommandLine;
+using CommandLine.Text;
 
 namespace pdf_merge {
     class Program {
@@ -8,6 +9,9 @@ namespace pdf_merge {
             // Define command line arguments
             [Option('d', "directory", Required = false, HelpText = "Set the directory to retrieve all PDF files from (Files are sorted lexicographically before combining).")]
             public string? Directory { get; set; }
+
+            [Value(0, MetaName = "directory", Required = false, Hidden = true)]
+            public string? PositionalDirectory { get; set; }
 
             [Option('f', "files", Required = false, HelpText = "Specify individual PDF file paths (Accepts multiple file paths separated by spaces) (Files are combined in the order they are specified).")]
             public IEnumerable<string>? Files { get; set; }
@@ -20,15 +24,21 @@ namespace pdf_merge {
 
 
             static void Main(string[] args) {
+                // Print help in case no args are passed
+                if (args.Length == 0) {
+                    args = ["--help"];
+                }
+
                 Parser.Default.ParseArguments<Options>(args)
                        .WithParsed<Options>(o => {
                            ConsoleOutput.Print("PDF-Merge");
                            List<string> filePaths = [];
 
-                           // If directory is specified, add the PDF files to list of file paths
-                           if (o.Directory != null) {
+                           // If a directory is specified, add the PDF files to list of file paths
+                           string? dir = o.PositionalDirectory ?? o.Directory;
+                           if (dir != null) {
                                try {
-                                   FileParser.FilesFromDirectory(o.Directory, ref filePaths, o.Verbose);
+                                   FileParser.FilesFromDirectory(dir, ref filePaths, o.Verbose);
                                }
                                catch (Exception e) {
                                    ConsoleOutput.Error(e.Message);
