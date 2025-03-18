@@ -1,0 +1,67 @@
+name: Publish on release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+    build:
+        name: Build binaries
+        runs-on: ubuntu-latest
+        steps:
+
+          - name: "📄 Checkout"
+            uses: actions/checkout@v4
+
+          - name: "📦 Package MacOS Arm"
+            run: |
+                cd ${{github.workspace}}
+                dotnet publish src/pdf-merge/pdf-merge.csproj -c Release -r osx-arm64 -o bin/osx-arm64 --self-contained true /p:UseAppHost=true /p:PublishSingleFile=true
+                zip -r pdf-merge-osx-arm64.zip bin/osx-arm64 -j
+                gh release upload ${{github.event.release.tag_name}} pdf-merge-osx-arm64.zip
+            env:
+              GITHUB_TOKEN: ${{ github.TOKEN }}
+            shell: bash
+          
+          - name: "📦 Package MacOS x64"
+            run: |
+                cd ${{github.workspace}}
+                dotnet publish src/pdf-merge/pdf-merge.csproj -c Release -r osx-x64 -o bin/osx-x64 --self-contained true /p:UseAppHost=true /p:PublishSingleFile=true
+                zip -r pdf-merge-osx-x64.zip bin/osx-x64 -j
+                gh release upload ${{github.event.release.tag_name}} pdf-merge-osx-x64.zip
+            env:
+              GITHUB_TOKEN: ${{ github.TOKEN }}
+            shell: bash
+
+          - name: "📦 Package Linux x64"
+            run: |
+                cd ${{github.workspace}}
+                dotnet publish src/pdf-merge/pdf-merge.csproj -c Release -r linux-x64 -o bin/linux-x64 --self-contained true /p:UseAppHost=true /p:PublishSingleFile=true
+                zip -r pdf-merge-linux-x64.zip bin/linux-x64 -j
+                gh release upload ${{github.event.release.tag_name}} pdf-merge-linux-x64.zip
+            env:
+              GITHUB_TOKEN: ${{ github.TOKEN }}
+            shell: bash
+
+          - name: "📦 Package Linux Arm"
+            run: |
+                cd ${{github.workspace}}
+                dotnet publish src/pdf-merge/pdf-merge.csproj -c Release -r linux-arm64 -o bin/linux-arm64 --self-contained true /p:UseAppHost=true /p:PublishSingleFile=true
+                zip -r pdf-merge-linux-arm64.zip bin/linux-arm64 -j
+                gh release upload ${{github.event.release.tag_name}} pdf-merge-linux-arm64.zip
+            env:
+              GITHUB_TOKEN: ${{ github.TOKEN }}
+            shell: bash
+
+          - name: "📦 Package Windows x64"
+            run: |
+                cd ${{github.workspace}}
+                dotnet publish src/pdf-merge/pdf-merge.csproj -c Release -r win-x64 -o bin/win-x64 --self-contained true /p:UseAppHost=true /p:PublishSingleFile=true
+                zip -r pdf-merge-win-x64.zip bin/win-x64 -j
+                gh release upload ${{github.event.release.tag_name}} pdf-merge-win-x64.zip
+            env:
+              GITHUB_TOKEN: ${{ github.TOKEN }}
+            shell: bash
