@@ -1,5 +1,3 @@
-using NUnit.Framework;
-using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 
 namespace pdf_merge.Tests;

@@ -60,4 +60,14 @@ public class FileParserTests {
         Assert.That(expected.SequenceEqual(result));
     }
 
+    [Test]
+    public void GetRecentPDFsReturnsFilesByAge() {
+        Dictionary<int, string> response = FileParser.GetRecentPDFsFromDirectory(testDir, false);
+        
+        var result = response.Select(kvp => (kvp.Key, Path.GetFileName(kvp.Value))).ToList();
+        List<(int, string)> expected = [(0, "file1.pdf"), (1, "file2.pdf"), (2, "file3.pdf")];
+
+        Assert.That(expected.SequenceEqual(result));
+    }
+
 }

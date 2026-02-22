@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-
 namespace pdf_merge;
 
 public class FileParser {
@@ -40,6 +37,75 @@ public class FileParser {
         }
 
         if (enableVerbose) ConsoleOutput.Success($"Finished retrieving files from target directory");
+    }
+
+    /// <summary>
+    /// Get the 15 most recently created PDFs in the specified directory.
+    /// Throws an exception in case the directory path is invalid.
+    /// </summary>
+    /// <param name="dirPath">Path to the directory to retrieve files from</param>
+    /// <param name="enableVerbose">Enables verbose mode to print extra messages to console</param>
+    /// <returns>Ordered dictionary containing the PDFs. Key = 0 is the most recently created PDF and Key = 14 the oldest</returns>
+    /// <exception cref="IOException"></exception>
+    public static Dictionary<int, string> GetRecentPDFsFromDirectory(string dirPath, bool enableVerbose) {
+        // Find all PDFs in the specified directory
+        if (!Directory.Exists(dirPath)) {
+            throw new IOException($"Cannot find directory: '{dirPath}'");
+        }
+
+        if (enableVerbose) ConsoleOutput.Print($"Retrieving PDF files from: {Path.GetDirectoryName(dirPath)}");
+        IEnumerable<string> fileEntries = Directory.GetFiles(dirPath).OrderByDescending(d => new FileInfo(d).CreationTime).Reverse();
+
+        if (fileEntries.Count() == 0) ConsoleOutput.Warning("No files found in directory");
+
+        // Retrieve only PDFs and build dictionary
+        var orderedPaths = new Dictionary<int, string>();
+        int pdfCounter = 0;
+        foreach (string file in fileEntries) {
+            // Add if PDF
+            if (Path.GetExtension(file).Equals(".pdf")) {
+                orderedPaths.Add(pdfCounter, file);
+
+                if (enableVerbose) ConsoleOutput.Print($"Added file {Path.GetFileName(file)}");
+
+                // Increment file counter and break when 15 files have been fetched
+                pdfCounter += 1;
+                if (pdfCounter == 15) break;
+            }
+            else {
+                if (enableVerbose) ConsoleOutput.Print($"Rejected file {Path.GetFileName(file)}");
+            }
+        }
+
+        return orderedPaths;
+    }
+
+    /// <summary>
+    /// Retrieve files from the ordered dictionary based on user input.
+    /// </summary>
+    /// <param name="orderedFilesById">Ordered dictionary containing the PDFs by their age</param>
+    /// <param name="filePaths">List to extend with the valid PDF file paths</param>
+    public static void FilesFromID(Dictionary<int, string> orderedFilesById, ref List<string> filePaths) {
+        string? selectedFileIDs = Console.ReadLine();
+        if (!string.IsNullOrEmpty(selectedFileIDs)) {
+            foreach (string fileId in selectedFileIDs.Split(' ')) {
+                int fileInt;
+
+                // Error handling
+                if (!int.TryParse(fileId, out fileInt)) {
+                    ConsoleOutput.Warning($"Unknown ID: '{fileId}', skipping...");
+                    continue;
+                }
+
+                if (fileInt > orderedFilesById.Count || fileInt < 0) {
+                    ConsoleOutput.Warning($"ID: {fileInt} is out of bounds, skipping...");
+                    continue;
+                }
+
+                // Add file
+                filePaths.Add(orderedFilesById[fileInt]);
+            }
+        }
     }
 
     /// <summary>

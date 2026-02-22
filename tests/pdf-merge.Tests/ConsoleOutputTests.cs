@@ -1,4 +1,3 @@
-using NUnit.Framework;
 
 namespace pdf_merge.Tests;
 

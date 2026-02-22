@@ -1,4 +1,3 @@
-using System;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 
