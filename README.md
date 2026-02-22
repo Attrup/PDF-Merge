@@ -19,6 +19,8 @@ pdf-merge <arguments>
   Specify individual PDF file paths (accepts multiple file paths separated by spaces). Files are combined in the order they are listed.
 - `-o, --output` (Default: `combined`)  
   Set the output file name (without file extension).
+- `-r, --recent` (Default: `false`) \
+  List the recently modified PDFs in the current directory (up to 15), and select which ones to merge.
 - `-v, --verbose` (Default: `false`)  
   Enable verbose output.
 - `--help`  
@@ -28,29 +30,53 @@ It is possible to specify both a directory and a list of files. In this case, al
 
 ### Examples
 
-#### Merge All PDF Files from a Directory  
-Merge all PDFs in the current directory:
+#### Merge All PDFs from a Directory  
+Current directory:
 
 ```bash
-pdf-merge --directory . --output MergedFile
+# No need for any arguments if targeting an entire directory
+pdf-merge . -o MergedFile
+
+# Can be specified with args too if merging an entire directory and specific files
 pdf-merge -d . -o MergedFile
+pdf-merge --directory . -o MergedFile
 ```
 
-Merge PDFs from another directory:
+Another directory:
 
 ```bash
-pdf-merge --directory ../../PDFSlides/Week_4 --output Week_4_Slides
+# No need for any arguments if targeting an entire directory
+pdf-merge ../../PDFSlides/Week_4 -o Week_4_Slides
+
+# Can be specified with args too if merging an entire directory and specific files
 pdf-merge -d ../../PDFSlides/Week_4 -o Week_4_Slides
+pdf-merge --directory ../../PDFSlides/Week_4 --output Week_4_Slides
 ```
 
-👉 **Note:** The output file will be saved in the directory where the command is executed.
+**Note:** The output PDF will be saved in the directory where the command is executed.
 
-#### Merge Selected PDF Files  
-Merge specific files:
+#### Merge Selected PDFs  
+Specific PDFs in any location:
 
 ```bash
-pdf-merge --files file1.pdf file2.pdf file3.pdf --output Week_1
 pdf-merge -f file1.pdf file2.pdf file3.pdf -o Week_1
+pdf-merge --files file1.pdf file2.pdf file3.pdf --output Week_1
+```
+
+List recently modified PDFs in current directory and select which ones to merge:
+
+```console
+$ pdf-merge -r -o SelectedFiles
+PDF-Merge
+Found 3 PDFs:
+[ID]	[File Name]
+ 0	 file1.pdf
+ 1	 file2.pdf
+ 2	 file3.pdf
+
+Select what files to merge, by listing their IDs separated by space:
+$ 3 2
+Merging PDF files   [####################] Done!
 ```
 
 ## Program Output
@@ -93,12 +119,12 @@ To use PDF-Merge, either download the [latest release](https://github.com/Attrup
 #### Steps
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/Attrup/PDF-Merge.git
    cd PDF-Merge
    ```
 2. Build a release version:
    ```bash
-   dotnet publish src/pdf-merge/pdf-merge.csproj -c Release -o bin/pdf-merge
+   dotnet publish src/pdf-merge/pdf-merge.csproj -c Release -o bin/pdf-merge --self-contained true /p:UseAppHost=true /p:PublishSingleFile=true
    ```
 3. Locate the built tool in:
    ```

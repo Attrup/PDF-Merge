@@ -62,14 +62,14 @@ public class ConsoleOutput {
     /// </summary>
     /// <param name="orderedFileDict">Ordered dictionary of files by their IDs</param>
     public static void PrintFileDictionary(Dictionary<int, string> orderedFileDict) {
-        Console.WriteLine($"Found {orderedFileDict.Values.Count} PDFs:\n");
+        Console.WriteLine($"Found {orderedFileDict.Values.Count} PDFs:");
 
         Console.WriteLine("[ID]\t[File Name]");
         foreach (var kvp in orderedFileDict) {
             Console.WriteLine($" {kvp.Key}\t {Path.GetFileName(kvp.Value)}");
         }
 
-        Console.WriteLine("\nSelect what files to merge, by listing their IDs separated by space:");
+        Console.WriteLine("\nEnter the IDs of the files you want to merge, separated by spaces.");
         Console.Write("IDs: ");
     }
 
